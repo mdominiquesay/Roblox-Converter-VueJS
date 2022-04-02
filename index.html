@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Roblox Converter</title>
+    <script src='https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body{
+            background: url('https://scontent.fmnl3-1.fna.fbcdn.net/v/t1.18169-9/10304497_586424444790014_3404755484942842147_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=cdbe9c&_nc_eui2=AeHk2wFnGS3sn_ZizCdx0onY4riyvEObKXjiuLK8Q5speAM9dvaunIBR-LlvaAPUyhM&_nc_ohc=cFU0q3KuuLwAX-bFbW2&_nc_ht=scontent.fmnl3-1.fna&oh=00_AT9qEu5Fg9MSB7QIrm6abwkHwDF3qV3ZYOHKdNnK-oEcKA&oe=62652674') ;
+            background-repeat:repeat-x;
+            background-size: cover;
+            background-attachment:fixed;
+            background-position: left top;
+            background-color: #2f2f3b;
+        }
+        .box{
+            text-align:justify;
+            display:inline-block;
+            padding:5rem;
+            padding-top:2rem;
+            margin-top:1rem;
+            margin-bottom:1rem;
+            box-shadow: 3px 6px rgba(0,0,0,0.25);
+            border-radius:16px;
+            background-color: rgba(255, 255, 255, 0.842);
+            font-size: 18px;
+        }
+        .row
+        {
+            padding:7px;
+        }
+        .input
+        {
+            border-radius: 6px;
+            line-height: 1.3333333;
+            border: 1px solid #ccc;
+            width:3rem;
+            font-size: 18px;
+            text-align: right;
+            padding-right: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id='app' style="text-align:center">
+        <form class="form-horizontal">
+            <div class="box">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>Robox Package</h1>
+                </div>
+            </div>   
+            <div class="row">
+                <Label class=" control-label" for="sale_price">Robux Price</Label>
+                <input id='sale_price'  class='input'  type='text' v-bind:value = 'sale_price' v-on:keyup.enter ='fetchData'>
+                for 
+                <input id="gained_robux"  class='input'  type='text' v-model = 'gained_robux' v-on:keyup.enter ='fetchData'>
+                Robux
+            </div> 
+            <div class="row">
+                ${{ sale_price }} is {{ gained_robux }} robux 
+            </div>
+            <div class="row">
+                P1 is {{ convert(robux) }} robux
+            </div>
+            <div class="row">
+                $1 is P
+                    <input type='text' class='input'  v-model = 'peso_to_dollar' v-on:change ='fetchData'>
+            </div> 
+            <div class="row">
+                P
+                    <input type='text' class='input' id='money_to_spend' v-model = 'money_to_spend' v-on:change ='getRobux'>  
+                    is {{ equivalent_robux }} robux
+            </div>
+            <div class="row">
+                    Roblox needed
+                    <input type='text' class='input' v-model= 'robux_needed' v-on:change ='getAmountFromRobox' > 
+                    is  P{{ convert(roblox_get) }} or ${{ convert(roblox_get_dollar) }} 
+            </div>
+        </div>
+        </form>
+    </div>
+</body>
+        <script>
+        var myObject = new Vue({
+            el: '#app',
+            mounted() {
+                this.fetchData();
+              },
+            data: {
+                sale_price: 4.99,
+                gained_robux: 400,
+                peso_to_dollar: 51.53,
+                money_to_spend: 100,
+                robux_needed: 400,
+                robux:0,
+                equivalent_robux:0,
+                roblox_get:0,
+                roblox_get_dollar:0
+            },
+            methods: {
+                /*Computes peso amount to robux*/
+                fetchData(){
+                    var PESOS=this.sale_price*this.peso_to_dollar;
+                    this.robux=this.gained_robux/PESOS;
+                    this.getRobux();
+                    this.getAmountFromRobox();
+                },
+                /*gets number of robux gained based on money to spend*/
+                getRobux(){
+                    this.equivalent_robux=parseInt(this.robux*this.money_to_spend);
+                },
+                /*gets price depending on robux needed*/
+                getAmountFromRobox(){
+                    this.roblox_get=this.robux_needed/this.robux;
+                    this.roblox_get_dollar=this.roblox_get/this.peso_to_dollar;
+                },
+                /*Converts input to Float with 2 decimal points*/
+                convert(value){
+                    return parseFloat(value).toFixed(2)
+                }
+            }
+        })
+        </script>
+</html>
